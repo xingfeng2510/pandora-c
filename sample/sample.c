@@ -1,41 +1,7 @@
-# pandora-c
+#include "pandora/pandora.h"
 
-## 安装依赖库
-
-### libcur
-- wget https://curl.haxx.se/download/curl-7.61.0.tar.gz
-- tar zxvf curl-7.61.0.tar.gz
-- cd curl-7.61.0
-- ./configure --prefix=/usr/local/curl
-- make && make install
-
-### apr
-- wget https://archive.apache.org/dist/apr/apr-1.5.2.tar.gz
-- tar zxvf apr-1.5.3.tar.gz
-- cd apr-1.5.2
-- ./configure --prefix=/usr/local/apr
-- make && make install
-
-### apr-util
-- apt-get install libexpat1
-- wget https://archive.apache.org/dist/apr/apr-util-1.5.4.tar.gz
-- tar zxvf apr-util-1.5.5.tar.gz
-- cd apr-util-1.5.4
-- ./configure --prefix=/usr/local/apr-util/ --with-apr=/usr/local/apr
-- make && make install
-
-## 安装pandora-c
-- git clone https://github.com/xingfeng2510/pandora-c.git
-- cd pandora-c
-- cmake .
-- make && make install
-
-## 使用pandora-c（可参考示例代码sample/sample.c）
-- 引用头文件<pandora/pandora.h>
-- 编译时加上-lpandora选项
-
-## 示例代码
-```
+int main(void)
+{
     // 1、设置client参数
     s_client_params params;
     params.host = "https://nb-pipeline.qiniuapi.com"; // Pandora服务地址
@@ -109,40 +75,7 @@
 
     // 7. 清理client实例
     pandora_client_cleanup(client);
-```
 
-## 注意事项
-- client的创建、释放
-```
-s_pandora_client *client = pandora_client_init(&params)
+    return 0;
+}
 
-...
-
-pandora_client_cleanup(client);
-```
-
-- 数据点集合的创建、释放
-
-```
-s_data_points *data = data_points_create();
-
-... 添加若干数据点并发送
-
-data_points_destroy(data);
-```
-
-- 数据点的创建、释放
-```
-// 1、创建一个数据点
-s_point_entry *pentry1 = point_entry_create();
-
-// 2、添加若干字段
-point_entry_append_string(pentry1, "f1", "abc");
-point_entry_append_int32(pentry1, "f2", 123);
-
-// 3、将该数据点加入到数据集
-data_points_append(data, pentry1);
-
-// 4、加入后释放该数据点
-data_points_destroy(data);
-```
